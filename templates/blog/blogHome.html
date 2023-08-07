@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog Home{% endblock title %}
+
+{% block blogactive %} active {% endblock blogactive %}
+
+{% block css %}
+<style>
+  .pagination{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+</style>
+{% endblock css %}
+
+
+{% block body %}
+{% load static %}
+<div class="container my-4 bg-body-tertiary border rounded-3" style="margin-top: 4.5rem!important; margin-bottom: 4.5rem!important;">
+  <div class="container text-center my-4">
+    <h2 class="d-inline-block mb-2 text-dark-emphasis"><b>Coding Articles By iCoder:</b> </h2>
+  </div>
+  <div class="container col-md-8 my-3">
+    {% for post in allPost %}
+    <div class="card mb-3">
+      <img src="/media/{{post.image}}" class="card-img-top" alt="..." height="300px" width="100%">
+      <div class="card-body">
+        <h3 class="card-title">{{post.title}}</h3>
+        <strong class="d-inline-block mb-2 text-dark-emphasis">Article By: {{post.author}}</strong>
+        <p class="card-text"><small class="text-body-secondary">{{post.timeStamp}}</small>
+          <a href="/blog/slug/{{post.slug}}" role="button" style="float: right;" class="btn btn-dark">Read</a>
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+
+    <div class="pagination">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          {% if prev == '#' %}
+          
+          {% else %}
+          <li class="page-item">
+            <a class="page-link" href="{{prev}}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          {% endif %}
+          {% load extras %}
+          {% for i in lastp|upto %}
+            {% if i == pagecnt %}
+              <li class="page-item active"><a class="page-link" href="/blog/?page={{i}}">{{i}}</a></li>
+            {% else %}
+               <li class="page-item"><a class="page-link" href="/blog/?page={{i}}">{{i}}</a></li>
+            {% endif %}
+          {% endfor %}
+          {% if next == '#' %}
+  
+          {% else %}
+          <li class="page-item">
+            <a class="page-link" href="{{next}}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+  {% endblock body %}

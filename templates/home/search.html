@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block homeactive %} active {% endblock homeactive %}
+
+{% block body %}
+<div class="container my-4 bg-body-tertiary border rounded-3" style="margin-top: 4.5rem!important; margin-bottom: 4.5rem!important;">
+  {% if allPost|length < 1 %} 
+  <div class="container my-4">
+    <h2 class="d-inline-block mb-2 text-dark-emphasis"><b>Search Results:</b> </h2>
+  </div>
+  <div class="col-md-8 my-3">
+    <p>We did not find blog for: <b>"{{query}}"</b>.<br>
+      Try the suggestions below or type a new query above in the search bar.</p>
+    <b>Suggestions:</b>
+    <ul>
+      <li>Check your spelling.</li>
+      <li>Try more general words.</li>
+      <li>Try different words that mean the same thing.</li>
+      <li>For more helpful tips on searching, visit the iCoder Help Centre</li>
+    </ul>
+  </div>
+  {% else %}
+  {% load static %}
+  <div class="container text-center my-4">
+    <h2 class="d-inline-block mb-2 text-dark-emphasis"><b>Search Results For: {{query}}</b> </h2>
+  </div>
+  <div class="container col-md-8 my-3">
+    {% for post in allPost %}
+    <div class="card mb-3">
+      <img src="/media/{{post.image}}" class="card-img-top" alt="..." height="300px" width="100%">
+      <div class="card-body">
+        <h3 class="card-title">{{post.title}}</h3>
+        <strong class="d-inline-block mb-2 text-dark-emphasis">Article By: {{post.author}}</strong>
+        <p class="card-text"><small class="text-body-secondary">{{post.timeStamp}}</small>
+          <a href="/blog/slug/{{post.slug}}" role="button" style="float: right;" class="btn btn-dark">Read</a>
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endblock body %}

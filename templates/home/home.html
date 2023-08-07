@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block homeactive %} active {% endblock homeactive %}
+
+{% block css %}
+<style>
+  .carousel-item img{
+      height: 87vh;
+    }
+</style>
+{% endblock css %}
+
+{% block body %}
+{% load static %}
+<div class="container my-4" style="margin-top: 4.5rem!important;">
+  <div id="carouselExampleFade" class="carousel slide carousel-fade">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="static/img/home/1.jpg" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="static/img/home/2.jpg" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="static/img/home/3.jpg" class="d-block w-100" alt="...">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</div>
+
+<div class=" container my-3 bg-body-tertiary border rounded-3">
+  <div class="h-100 p-5 ">
+    <div class="container-fluid py-5">
+      <h1 class="display-5 fw-bold">Welcome to iCoder</h1>
+      <p class="fs-4"><b>iCoder</b>, a platform dedicated to exploring the fascinating world of programming and software development. Our mission is to make coding accessible to everyone, regardless of their skill level. Whether you're a coding enthusiast looking to expand your knowledge or a beginner taking your first steps into the world of programming, we've got you covered.</p>
+      <p class="fs-4">Join us on this exciting journey as we unlock the doors to endless possibilities in the world of programming. Happy coding!</p>
+      <a href="/blog" class="btn btn-dark btn-lg">Go to Blog</a>
+    </div>
+  </div>
+</div>
+
+<div class="container my-4 bg-body-tertiary border rounded-3" style="margin-bottom: 4.5rem!important;">
+  <div class="container text-center my-4">
+    <h1 class="d-inline-block mb-2 text-dark-emphasis"><b>Popular Blog Posts:</b> </h1>
+  </div>
+  {% for blog in popular_blogs %} 
+  <div class="container col-md-8 my-3">
+    <div class="card mb-3">
+      <img src="/media/{{blog.image}}" class="card-img-top" alt="..." height="300px" width="100%">
+      <div class="card-body">
+        <h3 class="card-title">{{blog.title}}</h3>
+        <strong class="d-inline-block mb-2 text-dark-emphasis">Article By: {{blog.author}}</strong>
+        <div class="row">
+          <div class="col-md-1">
+            <small class="fa fa-eye" aria-hidden="true"></small>
+            <small class="text-body-secondary">{{blog.views}}</small>
+          </div>
+          <div class="col-md-1">
+            <small class="fa-solid fa-heart"></small>
+            <small class="text-body-secondary">{{blog.likes.count}}</small>
+          </div>
+        </div>
+        <p class="card-text">
+          <small class="text-body-secondary">{{blog.timeStamp}}</small>
+          <a href="blog/slug/{{blog.slug}}" role="button" style="float: right;" class="btn btn-dark">Read</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock body %}

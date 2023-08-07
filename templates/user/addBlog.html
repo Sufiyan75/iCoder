@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock title %}
+
+{% block dashboardactive %} active {% endblock dashboardactive %}
+
+{% block script %}
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+{% endblock script %}
+
+{% block css %}
+<style>
+    #content{
+        height: 60vh;
+    }
+    .breadcrumb-item a{
+      text-decoration: none;
+      color: black;
+    }
+    .breadcrumb-item a:hover{
+      color: red;
+    }
+</style>
+{% endblock css %}
+
+{% block body %}
+<div class="container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a class="card-title text-center" href="/user/dashboard">Dashboard</a></li>
+      <li class="breadcrumb-item"><a class="card-title text-center" href="/user/addBlog">Add Blog</a></li>
+    </ol>
+  </nav>
+</div>
+
+<div class="container my-3" style="margin-bottom: 4.5rem!important;">
+  <div class="card bg-body-tertiary mb-3 border rounded-3">
+      <div class="card-body">
+        <h1 class="card-title text-dark-emphasis text-center">Add New Blog Post</h1>
+        <form action="/addBlog/" method="post" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" name="title" aria-describedby="title" required>
+          </div>
+          <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <input type="text" class="form-control" id="content" name="content" aria-describedby="content" required>
+          </div>
+          <div class="mb-3">
+            <label for="author" class="form-label">Author</label>
+            <input type="text" class="form-control" id="author" name="author" value="{{request.user.first_name}} {{request.user.last_name}}" aria-describedby="author" required readonly>
+          </div>
+          <div class="mb-3">
+            <label for="slug" class="form-label">Slug</label>
+            <input type="text" class="form-control" id="slug" name="slug" aria-describedby="slug" required>
+          </div>
+          <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input type="file" class="form-control" name="image" id="image" accept="image/png, image/jpeg" required>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-dark">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    tinymce.init({
+      selector: '#content',
+      plugins: [
+    'advlist autolink link image lists charmap print preview hr anchor pagebreak',
+    'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+    'table emoticons template paste help'
+  ],
+  toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | ' +
+    'bullist numlist outdent indent | link image | print preview media fullpage | ' +
+    'forecolor backcolor emoticons | help',
+  menu: {
+    favs: {title: 'My Favorites', items: 'code visualaid | searchreplace | emoticons'}
+  },
+  menubar: 'favs file edit view insert format tools table help',
+  content_css: 'css/content.css'
+    });
+  </script>
+{% endblock body %}

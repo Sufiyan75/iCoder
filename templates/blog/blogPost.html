@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block title %}{{allPost.title}}{% endblock title %}
+
+{% block blogactive %} active {% endblock blogactive %}
+
+{% block css %}
+<style>
+  .blog-post-meta a{
+    color: black;
+    text-decoration: none;
+  }
+  .blog-post-meta a:hover{
+    color: blue;
+  }
+  .image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+</style>
+{% endblock css %}
+
+{% block body %}
+
+<div class="container my-4 bg-body-tertiary border rounded-3" style="margin-top: 4.5rem!important;">
+  <div class="col-md-12 ">
+    <h3 class="pb-4 mb-4 my-4 fst-italic border-bottom">
+      From the iCoder
+    </h3>
+
+    <article class="blog-post">
+      <h2 class="display-5 link-body-emphasis mb-1">{{allPost.title}}</h2>
+      <p class="blog-post-meta">{{allPost.timeStamp}} by <a href="#">{{allPost.author}}</a></p>
+      <div class="row">
+        <div class="col-md-1">
+          <p class="fa fa-eye" aria-hidden="true"></p>
+          <small class="text-body-secondary">{{allPost.views}}</small>
+        </div>
+        <div class="col-md-1">
+          <small class="fa-solid fa-heart"></small>
+          <small class="text-body-secondary">{{allPost.likes.count}}</small>
+        </div>
+        <div class="col-md-1">
+          <small class="fa-solid fa-comment"></small>
+          <small class="text-body-secondary">{{comments.count}}</small>
+        </div>
+      </div>
+      {% if user.is_authenticated %}
+      <form action="" method="post">
+        {% csrf_token %}
+        {% if liked %}
+          <button class="btn btn-sm btn-dark" title="Unlike the post">
+            <small class="fa fa-thumbs-down" aria-hidden="true"></small> Unlike
+          </button>
+        {% else %}
+          <button class="btn btn-sm btn-dark" title="Like the post">
+            <small class="fa fa-thumbs-up" aria-hidden="true"></small> Like
+          </button>
+        {% endif %}
+      </form>
+      {% else %}
+
+      {% endif %}
+      <hr>
+
+      <div class="image">
+        <img src="/media/{{allPost.image}}" class="img-fluid border" alt="...">
+      </div>
+      <hr>
+      <p>{{allPost.introcontent|safe}}</p>
+      
+      <p>{{allPost.content|safe}}</p>
+
+      <p>{{allPost.conclusion|safe}}</p>
+      <hr>
+    </article>
+  </div>
+</div>
+
+<div class="container my-4 bg-body-tertiary border rounded-3" style="margin-bottom: 4.5rem!important;">
+  <h2 class="my-3">Comments: <span class="badge rounded-pill text-bg-dark" style="font-size: 15px;">{{comments.count}}</span></h2>
+  <div class="my-2">
+    {% if user.is_authenticated %}
+    <form action="/blog/postComment/" method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <input type="hidden" name="postSno" value={{allPost.sno}}>
+        <input type="hidden" name="parentSno" value="">
+        <input type="text" class="form-control" name="comment" id="comment" placeholder="Enter Your Comment" required>
+        <button type="submit" class="btn btn-dark my-3">Submit</button>
+      </div>
+    </form>
+    {% else %}
+    <p>Please Login to post a comment</p>
+    {% endif %}
+  </div>
+
+  {% for comment in comments %}
+  {% load humanize %}
+  <div class="row my-3 py-3 border">
+    <div class="col-md-1">
+      <img class="rounded mx-auto d-block w-100 p-2" style="width: 65%!important;" src="/static/img/user.jpg"
+        alt="No Image">
+    </div>
+    <div class="col-md-11">
+      <b>{{comment.user.username}}</b> <small>{{comment.timeStamp | naturaltime}}</small>
+      <div>
+        <p>{{comment.comment}}</p>
+      </div>
+      <div class="reply mx-0">
+        <button class="btn btn-sm btn-dark" type="button" data-bs-toggle="collapse"
+          data-bs-target="#reply{{comment.sno}}" aria-expanded="false" aria-controls="reply{{comment.sno}}">
+          Reply
+        </button>
+        <div class="collapse" id="reply{{comment.sno}}">
+          <div class="card card-body my-2">
+            {% if user.is_authenticated %}
+            <form action="/blog/postComment/" method="post">
+              {% csrf_token %}
+              <div class="form-group">
+                <input type="hidden" name="postSno" value={{allPost.sno}}>
+                <input type="hidden" name="parentSno" value={{comment.sno}}>
+                <input type="text" class="form-control" name="comment" id="comment" placeholder="Enter Your Reply" required>
+                <button type="submit" class="btn btn-sm btn-dark my-3">Submit</button>
+              </div>
+            </form>
+            {% else %}
+            <p>Please Login to post a reply</p>
+            {% endif %}
+          </div>
+        </div>
+        <div class="replies my-2">
+          {% load extras %}
+          {% for reply in replyDict|get_val:comment.sno %}
+            <div class="row my-2">
+              <div class="col-md-1">
+                <img class="img-fluid rounded mx-auto d-block w-100 p-2" style="width: 65%!important;" src="/static/img/user.jpg"
+                  alt="No Image">
+              </div>
+              <div class="col-md-11">
+                <b>{{reply.user.username}}</b> <small>{{reply.timeStamp | naturaltime}}</small>
+                <div>
+                  <p>{{reply.comment}}</p>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock body %}

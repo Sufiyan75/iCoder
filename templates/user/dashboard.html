@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock title %}
+
+{% block dashboardactive %} active {% endblock dashboardactive %}
+
+{% block css %}
+<style>
+  .breadcrumb-item a{
+    text-decoration: none;
+    color: black;
+  }
+  .breadcrumb-item a:hover{
+    color: red;
+  }
+</style>
+{% endblock css %}
+
+{% block body %}
+<div class="container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a class="card-title text-center" href="/user/dashboard">Dashboard</a></li>
+    </ol>
+  </nav>
+</div>
+
+<div class="container my-3" style="margin-bottom: 4.5rem!important;">
+    <div class="card bg-body-tertiary mb-3 border rounded-3">
+      <div class="card-body">
+        <h3 class="card-title text-dark-emphasis text-center">Welcome <b>{{request.user.first_name}} {{request.user.last_name}}</b></h3>
+        <hr>
+        <div class="container-fluid my-4 text-center">
+            <div class="row my-2">
+              <div class="col my-2">
+                <div class="card" style="width: 18rem; background-color: black;">
+                    <div class="card-body" style="color: white;">
+                      <h5 class="card-title">Add New Blog</h5>
+                      <hr>
+                      <p class="card-text">Here You can add your own personalized blog.</p>
+                      <a href="/addBlog" class="btn btn-outline-light">Add New Blog</a>
+                    </div>
+                  </div>
+              </div>
+              <div class="col my-2">
+                <div class="card" style="width: 18rem; background-color: black;">
+                    <div class="card-body" style="color: white;">
+                      <h5 class="card-title">Manage Profile</h5>
+                      <hr>
+                      <p class="card-text">Here you can manage your profile and personal details.</p>
+                      <a href="/profile" class="btn btn-outline-light">Manage Profile</a>
+                    </div>
+                  </div>
+              </div>
+              <div class="col my-2">
+                <div class="card" style="width: 18rem; background-color: black;">
+                    <div class="card-body" style="color: white;">
+                      <h5 class="card-title">Your Blogs</h5>
+                      <hr>
+                      <p class="card-text">Here you can manage your recent uploaded blogs.</p>
+                      <a href="/viewBlogs" class="btn btn-outline-light">Your Blogs</a>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+</div>
+{% endblock body %}

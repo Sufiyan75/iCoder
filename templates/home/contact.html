@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us{% endblock title %}
+
+{% block contactactive %} active {% endblock contactactive %}
+
+{% block body %}
+
+<div class="container my-3" style="margin-top: 4.5rem!important;">
+  {% load static %}
+  <div class="card bg-body-tertiary mb-3 border rounded-3" style="margin-bottom: 4.5rem!important;">
+    <img src="/static/img/contact.jpg" class="card-img-top" alt="Contact Image">
+    <div class="card-body">
+      <h1 class="card-title text-dark-emphasis text-center">Contact iCoder Admin</h1>
+      <form action="/contact/" method="POST" id="demo-form">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="name" name="name" aria-describedby="name" required onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" maxlength="50" minlength="3">
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" aria-describedby="email" required>
+          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3">
+          <label for="phone" class="form-label">Phone</label>
+          <input type="text" class="form-control" name="phone" id="phone" required minlength="10">
+        </div>
+        <div class="mb-3">
+          <label for="content" class="form-label">Describe Your Issue:</label>
+          <textarea class="form-control" name="content" id="content" cols="30" rows="5" required minlength="10"></textarea>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-dark">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock body %}

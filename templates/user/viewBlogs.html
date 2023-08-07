@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Profile{% endblock title %}
+
+{% block dashboardactive %} active {% endblock dashboardactive %}
+
+{% block css %}
+<style>
+  .breadcrumb-item a{
+    text-decoration: none;
+    color: black;
+  }
+  .breadcrumb-item a:hover{
+    color: red;
+  }
+  .quick-btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .quick-btn a{
+    margin: 5px;
+  }
+</style>
+{% endblock css %}
+
+{% block body %}
+
+<div class="container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a class="card-title text-center" href="/user/dashboard">Dashboard</a></li>
+      <li class="breadcrumb-item"><a class="card-title text-center" href="/user/viewBlogs">View Blogs</a></li>
+    </ol>
+  </nav>
+</div>
+
+<div class="container my-4 bg-body-tertiary border rounded-3" style="margin-bottom: 4.5rem!important;">
+    <div class="container text-center my-4">
+      <h2 class="d-inline-block mb-2 text-dark-emphasis"><b>Your Blog Posts</b></h2>
+    </div>
+    <div class="container col-md-8 my-3">
+      {% for post in allPost %}
+      <div class="card mb-3">
+        <img src="/media/{{post.image}}" class="card-img-top" alt="..." height="300px" width="100%">
+        <div class="card-body">
+          <h3 class="card-title">{{post.title}}</h3>
+          <strong class="d-inline-block mb-2 text-dark-emphasis">Article By: {{post.author}}</strong>
+          <p class="card-text">
+            <small class="text-body-secondary">{{post.timeStamp}}</small>
+          </p>
+          <div class="quick-btn">
+            <a href="/{{post.slug}}/editBlog" role="button" class="btn btn-dark">
+              <i class='bx bx-edit'></i> Edit
+            </a>
+            <a href="/{{post.slug}}/deleteBlog" role="button" class="btn btn-dark">
+              <i class='bx bxs-trash'></i> Delete
+            </a>
+            <a href="/blog/slug/{{post.slug}}" role="button" class="btn btn-dark">
+              <i class="fa fa-eye" aria-hidden="true"></i> View
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+  
+      {% comment %} <div class="pagination">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            {% if prev == '#' %}
+            
+            {% else %}
+            <li class="page-item">
+              <a class="page-link" href="{{prev}}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            {% endif %}
+            {% load extras %}
+            {% for i in lastp|upto %}
+              {% if i == pagecnt %}
+                <li class="page-item active"><a class="page-link" href="/blog/?page={{i}}">{{i}}</a></li>
+              {% else %}
+                 <li class="page-item"><a class="page-link" href="/blog/?page={{i}}">{{i}}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if next == '#' %}
+    
+            {% else %}
+            <li class="page-item">
+              <a class="page-link" href="{{next}}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div> {% endcomment %}
+    </div>
+  </div>
+
+{% endblock body %}

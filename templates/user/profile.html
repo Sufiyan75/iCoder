@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Profile{% endblock title %}
+
+{% block dashboardactive %} active {% endblock dashboardactive %}
+
+{% block css %}
+<style>
+  .breadcrumb-item a{
+    text-decoration: none;
+    color: black;
+  }
+  .breadcrumb-item a:hover{
+    color: red;
+  }
+</style>
+{% endblock css %}
+
+{% block body %}
+
+<div class="container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a class="card-title text-center" href="/user/dashboard">Dashboard</a></li>
+      <li class="breadcrumb-item"><a class="card-title text-center" href="/user/profile">Profile</a></li>
+    </ol>
+  </nav>
+</div>
+
+<div class="container my-3" style="margin-bottom: 4.5rem!important;">
+  {% load static %}
+  <div class="card bg-body-tertiary mb-3 border rounded-3">
+    {% comment %} <img src="/static/img/contact.jpg" class="card-img-top" alt="Contact Image"> {% endcomment %}
+    <div class="card-body">
+      <h1 class="card-title text-dark-emphasis text-center">Manage User Profile</h1>
+      <form action="/profile/" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username" name="username" value="{{request.user.username}}" placeholder="Enter Your Username" onkeypress="return(event.charCode != 32)" required>
+        </div>
+        <div class="mb-3">
+          <label for="fname" class="form-label">First Name</label>
+          <input type="text" class="form-control" id="fname" name="fname" aria-describedby="fname" required onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" maxlength="50" minlength="3" value="{{request.user.first_name}}" >
+        </div>
+        <div class="mb-3">
+          <label for="lname" class="form-label">Last Name</label>
+          <input type="text" class="form-control" id="lname" name="lname" aria-describedby="lname" required onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" maxlength="50" minlength="3" value="{{request.user.last_name}}" >
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" aria-describedby="email"  value="{{request.user.email}}" required>
+          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-dark">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock body %}
